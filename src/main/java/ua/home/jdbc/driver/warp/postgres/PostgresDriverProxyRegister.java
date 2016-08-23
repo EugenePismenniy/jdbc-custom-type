@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.math.BigDecimal;
 import java.sql.*;
-import java.util.Base64;
 
 public final class PostgresDriverProxyRegister implements InvocationHandler {
 
@@ -56,6 +55,7 @@ public final class PostgresDriverProxyRegister implements InvocationHandler {
 
 		String methodName = method.getName();
 
+		// в этом блоки можно делать нужные изменения для возвращаемых значений методамы ResultSet
 		if (proxy instanceof ResultSet) {
 			Object invokeResult = method.invoke(target, args);
 			if (invokeResult != null) {
