@@ -5,42 +5,29 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-/**
- * @author Evgeniy Pismenny 22.08.16 20:21
- */
 public class Main {
-
 
     public static void main(String[] args) throws Exception {
 
-        // Class.forName("org.postgresql.Driver");
-
         Class.forName("ua.home.jdbc.driver.warp.postgres.PostgresDriverProxyRegister");
 
-
         try(Connection connection = DriverManager
+                // используем отличный от оригинала прификс к url 'jdbc:postgresql-proxy:', что бы именно наш драйвер грузился
                 .getConnection("jdbc:postgresql-proxy://localhost:5432/test_db", "test_user", "test_password");
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT count(*) FROM public.book")) {
-
+            ResultSet rs = statement.executeQuery("SELECT 12.65456161 as testDecimal, '  tEsTsTrinG    ' as testString")) {
 
             if (rs.next()) {
-
-                //rs.get
-
-
-                //rs.ge
-
-
-                System.out.println(rs.getInt(1));
-
+                System.out.printf("testDecimal = '%s'\n", rs.getBigDecimal("testDecimal"));
+                System.out.printf("testString = '%s'\n", rs.getString("testString"));
             }
 
+            /* output in console
+                    testDecimal = '12.65'
+                    testString = 'TESTSTRING'
+            */
 
-            System.out.println(!connection.isClosed());
         }
-
-
     }
 
 
